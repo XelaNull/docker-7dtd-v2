@@ -156,7 +156,7 @@ function reinstallsmm()
   $cmd="rm -rf /docker-7dtd";
   writeEntryToLog("Deleting the existing/local GIT repo.\n> $cmd", $SMM_REINSTALL_LOG); exec($cmd);
 
-  $cmd="cd /; git clone https://github.com/XelaNull/docker-7dtd.git";
+  $cmd="cd /; git clone https://github.com/XelaNull/docker-7dtd-v2.git";
   writeEntryToLog("Re-Cloning the docker-7dtd GIT repo.\n> $cmd", $SMM_REINSTALL_LOG); exec($cmd);
 
   // Link all the files from the GIT repo to the HTML directory
@@ -166,16 +166,21 @@ function reinstallsmm()
       writeEntryToLog("Create the base html directory.\n> $cmd", $SMM_REINSTALL_LOG); exec($cmd);
     }
   writeEntryToLog("SymLink the images directory.\n> ln -s /docker-7dtd/7dtd-servermod/images $INSTALL_DIR/html/images", $SMM_REINSTALL_LOG);
-  @link("/docker-7dtd/7dtd-servermod/images", "$INSTALL_DIR/html/images");
+  exec("ln -s /docker-7dtd/7dtd-servermod/images $INSTALL_DIR/html/images");
+  //@link("/docker-7dtd/7dtd-servermod/images", "$INSTALL_DIR/html/images");
   writeEntryToLog("SymLink the site_func directory.\n> ln -s /docker-7dtd/7dtd-servermod/site_func $INSTALL_DIR/html/site_func", $SMM_REINSTALL_LOG);
-  @link("/docker-7dtd/7dtd-servermod/site_func", "$INSTALL_DIR/html/site_func");
+  exec("ln -s /docker-7dtd/7dtd-servermod/site_func $INSTALL_DIR/html/site_func");
+  //@link("/docker-7dtd/7dtd-servermod/site_func", "$INSTALL_DIR/html/site_func");
 
   writeEntryToLog("SymLink the index.php file.\n> ln -s /docker-7dtd/7dtd-servermod/index.php $INSTALL_DIR/html/index.php", $SMM_REINSTALL_LOG);
-  @link("/docker-7dtd/7dtd-servermod/index.php", "$INSTALL_DIR/html/index.php");
+  //@link("/docker-7dtd/7dtd-servermod/index.php", "$INSTALL_DIR/html/index.php");
+  exec("ln -s /docker-7dtd/7dtd-servermod/index.php $INSTALL_DIR/html/index.php");
   writeEntryToLog("SymLink the vars.inc.php file.\n> ln -s /docker-7dtd/7dtd-servermod/vars.inc.php $INSTALL_DIR/html/vars.inc.php", $SMM_REINSTALL_LOG);
-  @link("/docker-7dtd/7dtd-servermod/vars.inc.php", "$INSTALL_DIR/html/vars.inc.php");
+  //@link("/docker-7dtd/7dtd-servermod/vars.inc.php", "$INSTALL_DIR/html/vars.inc.php");
+  exec("ln -s /docker-7dtd/7dtd-servermod/vars.inc.php $INSTALL_DIR/html/vars.inc.php");
   writeEntryToLog("SymLink the main.css.\n> ln -s /docker-7dtd/7dtd-servermod/main.css $INSTALL_DIR/html/main.css", $SMM_REINSTALL_LOG);
-  @link("/docker-7dtd/7dtd-servermod/main.css", "$INSTALL_DIR/html/main.css");
+  //@link("/docker-7dtd/7dtd-servermod/main.css", "$INSTALL_DIR/html/main.css");
+  exec("ln -s /docker-7dtd/7dtd-servermod/main.css $INSTALL_DIR/html/main.css");
 
   // Set file ownership to allow website to write to key files
   writeEntryToLog("Set the ownership on the serverconfig.xml to allow the Nginx webserver to modify it.\n> chown nobody $INSTALL_DIR/serverconfig.xml", $SMM_REINSTALL_LOG);
@@ -199,7 +204,7 @@ function install7dtd()
   if($STEAMCMD_BETA_PASSWORD!="") $betapassword="-betapassword $STEAMCMD_BETA_PASSWORD";
 
   writeEntryToLog("Starting Steam to perform 7DTD game server install into $INSTALL_DIR", $REINSTALL_LOG);
-  exec("steamcmd +login anonymous +force_install_dir $INSTALL_DIR +app_update 294420 $beta $betapassword $validate +quit > $REINSTALL_LOG");
+  exec("steamcmd +force_install_dir $INSTALL_DIR +login anonymous +app_update 294420 $beta $betapassword $validate +quit > $REINSTALL_LOG");
 }
 
 // Write out message to log
