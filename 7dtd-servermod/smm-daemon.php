@@ -2,19 +2,19 @@
 <?php
 include("vars.inc.php");
 
-$db = new SQLite3('smmControl.sqlite');
+$db = new PDO('sqlite:smmControl.sqlite');
 chown('smmControl.sqlite', 'nobody'); // Ensure that the website can also read/write to this file
 
 $query = "CREATE TABLE IF NOT EXISTS smmcontrol (command TEXT, payload TEXT, executed INTEGER)";
-$db->queryExec($query, $error) or die($error);
+$db->query($query);
 
 // ModName,ModPath,Activated,OriginationPath
 $query = "CREATE TABLE IF NOT EXISTS installedmods (ModName TEXT, ModPath TEXT, Activated INTEGER, OriginationPath TEXT)";
-$db->queryExec($query, $error) or die($error);
+$db->query($query);
 
 // Create default file is there is not web page just yet
 if(!file_exists("$INSTALL_DIR/index.php"))
-    file_put_contents("<html><head> <meta http-equiv=\"refresh\" content=\"30\" /></head><body><center>7DaysToDie is currently installing in the background.<br><br>This page will automatically refresh every 30 seconds until the server is installed.<center></body></html>", "$INSTALL_DIR/index.php");
+    file_put_contents("$INSTALL_DIR/index.php", "<html><head> <meta http-equiv=\"refresh\" content=\"30\" /></head><body><center>7DaysToDie is currently installing in the background.<br><br>This page will automatically refresh every 30 seconds until the server is installed.<center></body></html>");
 
 // Ensure the Steam client is up-to-date, provided that it is not already running
 exec("ps awwux | grep steamcmd | grep -v grep && steamcmd +quit");
@@ -43,7 +43,7 @@ searchForInstalledMods();
 while(true)
 {
   $query = "SELECT rowid,command,payload FROM smmcontrol WHERE executed = 0 ORDER by rowid asc LIMIT 1";
-  $results = $db->queryExec($query, $error) or die($error);
+  $results = $db->query($query);
   while($result = $results->fetchArray())
     {
       switch($result['command'])
@@ -227,7 +227,7 @@ function searchForInstalledMods()
 
   $MODS_DIR="$INSTALL_DIR/Mods-Available";
 
-  $db->queryExec("DELETE FROM installedmods", $error) or die($error);
+  $db->query("DELETE FROM installedmods");
 
   // Build array of ModInfo.xml instances installed
   $it = new RecursiveDirectoryIterator($MODS_DIR);
@@ -261,7 +261,7 @@ function searchForInstalledMods()
 
     $query = "INSERT INTO installedmods (ModName, ModVersion, ModDownloadURL, ModAuthor, ModWebsite, ModDescription, Activated, ModPath) VALUES
     (\"$Name\", $Version, $DownloadURL, \"$Author\", $Website, \"$Description\", 0, $ShortModPath)";
-    $db->queryExec($query, $error) or die($error);
+    $db->query($query);
   }
 
   writeEntryToLog("Total Modlets: ".number_format(count($MOD_ARRAY)));
