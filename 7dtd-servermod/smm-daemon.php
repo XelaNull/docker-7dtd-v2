@@ -12,9 +12,13 @@ $db->query($query);
 $query = "CREATE TABLE IF NOT EXISTS installedmods (ModName TEXT, ModPath TEXT, Activated INTEGER, OriginationPath TEXT)";
 $db->query($query);
 
+// Create default game directory if it does not exist
+if(!is_dir("$INSTALL_DIR")) mkdir($INSTALL_DIR);
+if(!is_dir("$INSTALL_DIR/html")) mkdir("$INSTALL_DIR/html");
+
 // Create default file is there is not web page just yet
-if(!file_exists("$INSTALL_DIR/index.php"))
-    file_put_contents("$INSTALL_DIR/index.php", "<html><head> <meta http-equiv=\"refresh\" content=\"30\" /></head><body><center>7DaysToDie is currently installing in the background.<br><br>This page will automatically refresh every 30 seconds until the server is installed.<center></body></html>");
+if(!file_exists("$INSTALL_DIR/html/index.php"))
+    file_put_contents("$INSTALL_DIR/html/index.php", "<html><head> <meta http-equiv=\"refresh\" content=\"30\" /></head><body><center>7DaysToDie is currently installing in the background.<br><br>This page will automatically refresh every 30 seconds until the server is installed.<center></body></html>");
 
 // Ensure the Steam client is up-to-date, provided that it is not already running
 exec("ps awwux | grep steamcmd | grep -v grep && steamcmd +quit");
@@ -25,6 +29,7 @@ if(!file_exists("/7dtd.initialized"))
     # Set up the installation directory
     if(!is_dir("$INSTALL_DIR/.local")) exec("mkdir -p $INSTALL_DIR/.local");
     if(!is_dir("$INSTALL_DIR/Mods")) exec("mkdir -p $INSTALL_DIR/Mods");
+    if(!is_dir("$INSTALL_DIR/Mods-Available")) exec("mkdir -p $INSTALL_DIR/Mods-Available");
     // Set up Steam .local directory
     exec("rm -rf /root/.steam/.local && ln -s $INSTALL_DIR/.local /root/.steam/.local");
 
