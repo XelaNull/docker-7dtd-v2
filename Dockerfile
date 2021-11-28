@@ -88,7 +88,9 @@ COPY --from=phpbuilder /usr/bin /usr/bin
 COPY --from=phpbuilder /usr/include /usr/include
 COPY --from=phpbuilder /usr/lib /usr/lib
 COPY --from=phpbuilder /usr/lib64 /usr/lib64
-#COPY --from=phpbuilder /usr/libexec /usr/libexec
+
+COPY --from=phpbuilder /usr/libexec /usr/libexec
+
 #COPY --from=phpbuilder /usr/local /usr/local
 COPY --from=phpbuilder /usr/sbin /usr/sbin
 #COPY --from=phpbuilder /usr/share /usr/share
@@ -117,7 +119,7 @@ RUN chmod a+x /gen_sup.sh && \
     /gen_sup.sh php-fpm "/etc/php/sbin/php-fpm -F" >> /etc/supervisord.conf && \
     /gen_sup.sh nginx "nginx -g 'daemon off;'" >> /etc/supervisord.conf && \
     /gen_sup.sh smm-daemon "/docker-7dtd/7dtd-servermod/smm-daemon.php $INSTALL_DIR" >> /etc/supervisord.conf
-    
+
 # ServerMod Manager
 EXPOSE 80/tcp
 EXPOSE 8080/tcp
