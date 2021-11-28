@@ -15,6 +15,7 @@ $db->query($query);
 // Create default game directory if it does not exist
 if(!is_dir("$INSTALL_DIR")) mkdir($INSTALL_DIR);
 if(!is_dir("$INSTALL_DIR/html")) mkdir("$INSTALL_DIR/html");
+//
 
 // Create default file is there is not web page just yet
 if(!file_exists("$INSTALL_DIR/html/index.php"))
