@@ -24,7 +24,7 @@ Activated (INTEGER)
 ModPath (TEXT)
 */
 
-$screen.="Mods Available:";
+$screen.="<h3>Mods Available</h3>";
 
 $screen.='<table id="myTable" class=tablesorter border=0 cellpadding=0 cellspacing=1>
 <thead>
