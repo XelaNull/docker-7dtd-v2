@@ -26,7 +26,23 @@ ModPath (TEXT)
 
 $screen.="<h3>Mods Available</h3>";
 
-$screen.='<table id="myTable" class=tablesorter border=0 cellpadding=0 cellspacing=1>
+$screen.='
+<div class="pager">
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/first.png" class="first"/>
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/prev.png" class="prev"/>
+        <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/next.png" class="next"/>
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/last.png" class="last"/>
+        <select class="pagesize" title="Select page size">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="all">All</option>
+        </select>
+        <select class="gotoPage" title="Select page number"></select>
+</div>
+
+<table id="myTable" class=tablesorter border=0 cellpadding=0 cellspacing=1>
 <thead>
    <tr>
      <th>&nbsp;</th>
@@ -36,6 +52,15 @@ $screen.='<table id="myTable" class=tablesorter border=0 cellpadding=0 cellspaci
      <th align=left><b>Author</b></th>
    </tr>
  </thead>
+ <tfoot>
+    <tr>
+      <th>&nbsp;</th>
+      <th align=left><b>Name</b></th>
+      <th align=left width=120><b>DL / Update</b></th>
+      <th align=left><b>Description</b></th>
+      <th align=left><b>Author</b></th>
+    </tr>
+  </tfoot>
  <tbody>
 ';
 $results=$db->query('SELECT * FROM installedmods'); $modcnt=0;
@@ -53,6 +78,22 @@ while($row = $results->fetch() )
   $screen.="</tr>\n";
   $modcnt++;
 }
-$screen.="</tbody></table>\n";
+$screen.='</tbody></table>
+
+<div class="pager">
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/first.png" class="first"/>
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/prev.png" class="prev"/>
+        <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/next.png" class="next"/>
+        <img src="https://mottie.github.io/tablesorter/addons/pager/icons/last.png" class="last"/>
+        <select class="pagesize" title="Select page size">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="all">All</option>
+        </select>
+        <select class="gotoPage" title="Select page number"></select>
+</div>
+';
 
 ?>
