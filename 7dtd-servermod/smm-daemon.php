@@ -383,11 +383,11 @@ function searchForInstalledMods()
 
     // Collect information previously stored into ModInfo.txt
     $ModInfo=file("$MODS_DIR/".$modPath_Pieces[0]."/ModInfo.txt");
-    $DownloadURL=$ModInfo[0];
-    $Method=$ModInfo[1];
-    $DownloadFile=$ModInfo[2];
-    $Extract=$ModInfo[3];
-    $CMD=$ModInfo[4];
+    $DownloadURL=trim($ModInfo[0]);
+    $Method=trim($ModInfo[1]);
+    $DownloadFile=trim($ModInfo[2]);
+    $Extract=trim($ModInfo[3]);
+    $CMD=trim($ModInfo[4]);
 
     writeEntryToLog("\"$Name\", $Version, $DownloadURL, \"$Author\", $Website, \"$Description\"");
 
@@ -401,13 +401,11 @@ function searchForInstalledMods()
         These fields are extrapolated based on our local install of the mod:
         Activated, ModPath */
 
-    $query = "INSERT INTO installedmods (ModName, ModVersion, ModAuthor, ModWebsite, ModDescription,
-      DownloadURL, Method, DownloadFile, Extract, CMD,
-      Activated, ModPath) VALUES
-    (\"$ModName\", \"$ModVersion\", \"$ModAuthor\", \"$ModWebsite\", \"$ModDescription\",
-      \"$DownloadURL\", \"$Method\", \"$DownloadFile\", \"$Extract\", \"$CMD\",
-      0, $ShortModPath)";
-    $db->query($query);
+    $query = "INSERT INTO installedmods (ModName, ModVersion, ModAuthor, ModWebsite, ModDescription, DownloadURL, Method, DownloadFile, Extract, CMD, Activated, ModPath) VALUES (\"$ModName\", \"$ModVersion\", \"$ModAuthor\", \"$ModWebsite\", \"$ModDescription\", \"$DownloadURL\", \"$Method\", \"$DownloadFile\", \"$Extract\", \"$CMD\", 0, \"$MODS_DIR/".$modPath_Pieces[0]."\")";
+    echo $query."\n";
+    $results=$db->query($query);
+    if($results==FALSE) echo "Error in fetch ".$db->lastErrorMsg();
+
   }
 
   writeEntryToLog("Total Modlets: ".number_format(@count($MOD_ARRAY)));

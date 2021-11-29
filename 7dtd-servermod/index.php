@@ -6,7 +6,7 @@ switch($_GET['DO'])
   default:
   case "status": include("site_func/status.inc.php"); break;
   case "serverconfig": include("site_func/serverconfig.inc.php"); break;
-  case "modselections": include("site_func/modselection.inc.php"); break;
+  case "modselection": include("site_func/modselection.inc.php"); break;
   case "modconfig": include("site_func/modconfig.inc.php"); break;
   case "logs": include("site_func/logs.inc.php"); break;
   case "adminips": include("site_func/adminips.inc.php"); break;
@@ -33,8 +33,21 @@ $SERVER_STATUS="Online";
   <link rel="stylesheet" href="main.css">
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.dark.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js"></script>
+
+  <script>
+  $(function() {
+    $("#myTable").tablesorter({
+      sortList : [[1,0]]
+    });
+
+  });
+  </script>
+
 
   <title></title>
 
