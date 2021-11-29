@@ -46,7 +46,7 @@ while($row = $results->fetch() )
 
   $screen.="<td width=350><b>".$row['ModName']."</b><br>Version: ".$row['ModVersion']."</td>";
 
-  $screen.="<td>".$row['DownloadURL']."</td>";
+  $screen.="<td><a href=".$row['DownloadURL']."><img src=images/direct-download.png border=0 width=20></a></td>";
   $screen.="<td width=auto><font size=2>".$row['ModDescription']."</font></td>";
   $screen.="<td><font size=2>".$row['ModAuthor']."</td>";
 
