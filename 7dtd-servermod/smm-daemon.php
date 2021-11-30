@@ -3,7 +3,7 @@
 include("vars.inc.php");
 
 // Ensure that there is a CLI argument of the INSTALL_DIR provided
-if($_argv[1]=='') exit;
+if($argv[1]=='') exit;
 
 $db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
 chown("$INSTALL_DIR/smmControl.sqlite", 'nobody'); // Ensure that the website can also read/write to this file
