@@ -1,5 +1,7 @@
 <?php
 include("vars.inc.php");
+// Ensure that this code is only called from the index.php
+if($_SERVER['SCRIPT_NAME']!='/index.php') exit;
 
 $db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
 /*

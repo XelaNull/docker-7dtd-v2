@@ -1,5 +1,7 @@
 <?php
-$INSTALL_DIR="/data/7DTD";
+include "vars.inc.php";
+// Ensure that this code is only called from the index.php
+if($_SERVER['SCRIPT_NAME']!='/index.php') exit;
 
 $screen.="Dumping file: $INSTALL_DIR/serverconfig.xml";
 $xmldata=file_get_contents("$INSTALL_DIR/serverconfig.xml");

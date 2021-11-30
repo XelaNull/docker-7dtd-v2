@@ -2,6 +2,9 @@
 <?php
 include("vars.inc.php");
 
+// Ensure that there is a CLI argument of the INSTALL_DIR provided
+if($_argv[1]=='') exit;
+
 $db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
 chown("$INSTALL_DIR/smmControl.sqlite", 'nobody'); // Ensure that the website can also read/write to this file
 
@@ -35,6 +38,17 @@ $query = "CREATE TABLE IF NOT EXISTS installedmods (
   Activated INTEGER, ModPath TEXT)";
 $db->query($query);
 
+/*
+adminips:
+
+IPAddress
+Comment
+TimestampAdded
+LastSeen
+*/
+$query = "CREATE TABLE IF NOT EXISTS adminips (IPAddress TEXT, Comment TEXT, TimestampAdded TEXT, LastSeen TEXT)";
+$db->query($query);
+$db->query("CREATE unique index IP on adminips (IPAddress)");
 
 /*
 availablemods:
@@ -61,6 +75,10 @@ foreach($MODS_TO_INSTALL as $MOD_ARRAY)
     (\"$DownloadURL\", \"$Method\", \"$DownloadFile\", \"$Extract\", \"$CMD\")";
     $db->query($query);
   }
+
+// Close database connection
+$db=null;
+
 
 echo "Check default directories\n";
 // Create default game directory if it does not exist
@@ -96,6 +114,9 @@ if(!file_exists("/7dtd.initialized"))
     // Install SMM
     reinstallsmm();
 
+    // Set ownership on the $INSTALL_DIR to nobody for sqlite purposes
+    exec("chown nobody $INSTALL_DIR");
+
     touch("/7dtd.initialized");
   }
 
@@ -105,6 +126,7 @@ searchForInstalledMods();
 
 while(true)
 {
+  $db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
   $query = "SELECT rowid,command,payload FROM smmcontrol WHERE executed = 0 ORDER by rowid asc LIMIT 1";
   $results = $db->query($query);
   while($result = $results->fetch())
@@ -192,6 +214,7 @@ while(true)
           break;
         }
     }
+$db=null;
 echo "iterating infinite loop";
 sleep(1);
 }
@@ -251,6 +274,7 @@ function reinstallsmm()
 
   //$query = "CREATE TABLE IF NOT EXISTS availablemods (DownloadURL TEXT, Method TEXT, DownloadFile TEXT, Extract TEXT, CMD TEXT)";
 
+  $db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
   echo "Iterate of the mods to download\n"; $MODCOUNT=0;
   $results=$db->query('SELECT * FROM availablemods');
   while($row = $results->fetch() )
@@ -263,6 +287,7 @@ function reinstallsmm()
     $MOD_ARRAY['CMD']=$row['CMD'];
     download_mod($MODCOUNT, $MOD_ARRAY); $MODCOUNT++;
   }
+  $db=null;
 
 }
 
@@ -349,9 +374,11 @@ function extractValue($line)
 
 function searchForInstalledMods()
 {
-  global $db, $INSTALL_DIR;
+  global $INSTALL_DIR;
 
   $MODS_DIR="$INSTALL_DIR/Mods-Available";
+
+  $db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
 
   $db->query("DELETE FROM installedmods");
 
@@ -409,5 +436,6 @@ function searchForInstalledMods()
   }
 
   writeEntryToLog("Total Modlets: ".number_format(@count($MOD_ARRAY)));
+  $db=null;
 }
 ?>

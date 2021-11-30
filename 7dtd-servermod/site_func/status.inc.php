@@ -1,5 +1,7 @@
 <?php
 include "vars.inc.php";
+// Ensure that this code is only called from the index.php
+if($_SERVER['SCRIPT_NAME']!='/index.php') exit;
 
 $screen="<h3>Status</h3>
 <div style=\"color: #c7c9c8;\">Server Online Status</div>

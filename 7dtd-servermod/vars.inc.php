@@ -11,4 +11,7 @@ $INSTALL_DIR="/data/7DTD";
   array(URL=>'https://github.com/dmustanger/7dtd-ServerTools/releases/download/19.6.5/7dtd-ServerTools-19.6.5.zip', Method=>'wget', File=>'ServerTools.zip', Extract=>'true', CMD=>''),
   array(URL=>'https://github.com/XelaNull/7DTD-Neopolitan/releases/download/A19.3_1.0d/2021-06-03_215241-Modlet_Collection-Shouden.zip', Method=>'wget', File=>'Neopolitan.zip', Extract=>'true', CMD=>'')
 );
+
+
+
 ?>

@@ -1,9 +1,16 @@
 <?php
 include "vars.inc.php";
 
+// Ensure that the IP accessing the page has permission.
+$db = new PDO("sqlite:$INSTALL_DIR/smmControl.sqlite");
+$rowcount = $db->query("SELECT * FROM adminips WHERE IPAddress='".$_SERVER['REMOTE_ADDR']."'")->fetchColumn();
+if($rowcount=='') { header('HTTP/1.0 403 Forbidden'); die('Forbidden IP: '.$_SERVER['REMOTE_ADDR']); }
+$db=null;
+
 switch($_GET['DO'])
 {
   default:
+  case "login": include("site_func/login.inc.php"); break;
   case "status": include("site_func/status.inc.php"); break;
   case "serverconfig": include("site_func/serverconfig.inc.php"); break;
   case "modselection": include("site_func/modselection.inc.php"); break;
